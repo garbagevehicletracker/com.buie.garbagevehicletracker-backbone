@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     Proxy: {
-      "/api": "http://localhost:5000",
+      "/api": "https://garbage-tracking-backend.onrender.com/",
     },
   },
   plugins: [react()],
