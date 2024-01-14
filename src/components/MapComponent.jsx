@@ -1,16 +1,25 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const MapComponent = () => {
+const YourComponent = () => {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
 
   useEffect(() => {
-    const socket = io('http://localhost:5500'); // Change the URL to match your server
+    // Connect to the server's socket.io instance
+    const socket = io('http://localhost:5500'); // Update this URL
 
-    socket.on('coordinatesUpdated', (data) => {
-      setCoordinates(data);
+    // Listen for 'connect' event
+    socket.on('connect', () => {
+      console.log('Socket connected successfully!');
     });
 
+    // Listen for 'coordinatesUpdated' event
+    socket.on('coordinatesUpdated', (updatedCoordinates) => {
+      // Update the state with the new coordinates
+      setCoordinates(updatedCoordinates);
+    });
+
+    // Cleanup the socket connection when the component unmounts
     return () => {
       socket.disconnect();
     };
@@ -18,11 +27,11 @@ const MapComponent = () => {
 
   return (
     <div>
-      <h1>Real-time Coordinates</h1>
-      <p>Latitude: {coordinates.latitude}</p>
-      <p>Longitude: {coordinates.longitude}</p>
-    </div>
+    <h1>Real-time Coordinates</h1>
+    <p>Latitude: {coordinates.latitude}</p>
+    <p>Longitude: {coordinates.longitude}</p>
+  </div>
   );
 };
 
-export default MapComponent;
+export default YourComponent;
