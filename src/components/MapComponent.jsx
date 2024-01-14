@@ -6,7 +6,7 @@ const YourComponent = () => {
 
   useEffect(() => {
     // Connect to the server's socket.io instance
-    const socket = io('http://localhost:5500'); // Update this URL
+    const socket = io('https://garbage-tracking-backend.onrender.com/'); // Update this URL
 
     // Listen for 'connect' event
     socket.on('connect', () => {
