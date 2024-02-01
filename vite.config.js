@@ -5,11 +5,12 @@ import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     Proxy: {
-      // "/api": "https://garbage-tracking-backend.onrender.com/",
-      "/api": "http://localhost:5500/",
+      "/api": "https://garbage-tracking-backend.onrender.com/",
+      // "/api": "http://localhost:5500/",
 
       "/socket.io": {
-        target: "http://localhost:5500/", // Replace with your backend server URL
+        // target: "http://localhost:5500/", // Replace with your backend server URL
+        target: "https://garbage-tracking-backend.onrender.com/", // Replace with your backend server URL
         changeOrigin: true,
         ws: true,
       },
