@@ -1,13 +1,14 @@
-// import React from "react";
-import MapComponent from "./components/MapComponent";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginForm from './pages/LoginForm';
 
 const App = () => {
   return (
-    <div>
-      <h1>Your App</h1>
-      <MapComponent />
-      {/* Other components */}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" exact component={LoginForm} />
+      </Routes>
+    </Router>
   );
 };
 
