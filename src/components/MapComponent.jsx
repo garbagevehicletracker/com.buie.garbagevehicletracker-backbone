@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-const MapComponent = () => {
+const YourComponent = () => {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
 
   useEffect(() => {
     // Connect to the server's socket.io instance
-    const socket = io("https://garbage-tracking-backend.onrender.com/"); // Update this URL
+    const socket = io('https://garbage-tracking-backend.onrender.com/'); // Update this URL
     // const socket = io("http://localhost:5500"); // Update this URL
 
     // Listen for 'connect' event
@@ -36,4 +36,4 @@ const MapComponent = () => {
   );
 };
 
-export default MapComponent;
+export default YourComponent;
