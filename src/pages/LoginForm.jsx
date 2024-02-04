@@ -1,70 +1,119 @@
-import  { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import React, { useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
-const LoginForm = () => {
-  // const navigate = useNavigate();
+const AdminPage = () => {
+  return (
+    <div>
+      <h2>Welcome to Admin Page!</h2>
+      {/* You can add more content or components for the admin page */}
+    </div>
+  );
+}
+
+const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Use useNavigate hook
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
     try {
       const response = await fetch('https://garbage-tracking-backend.onrender.com/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        body: JSON.stringify({ username, password }),
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
+      if (response.ok) {
+        const data = await response.json();
+        const token = data.token;
+
+        // Store token in localStorage or a state management solution of your choice
+        localStorage.setItem('token', token);
+
+        // Redirect to AdminPage on successful login
+        navigate('/admin'); // Replace '/admin' with your desired route
+
+        // You can use the token in the headers for subsequent requests
+        // Example: headers: { 'Authorization': `Bearer ${token}` }
+
+      } else {
+        console.error('Login failed');
       }
-
-      const data = await response.json();
-      const { token } = data;
-
-      // Store the token globally (e.g., in a state management library like Redux, or use Context API)
-      // For simplicity, using localStorage in this example
-      storeToken(token);
-
-      // Redirect to AdminPage
-      // navigate('/admin');
-
     } catch (error) {
-      // Show error alert
-      alert('Login failed. Please check your credentials.');
+      console.error('Error during login:', error);
     }
   };
 
-  const storeToken = (token) => {
-    // You can use localStorage or other secure storage mechanism to store the token
-    localStorage.setItem('jwtToken', token);
-
-    // Set a timeout to clear the token after 1 hour
-    setTimeout(() => {
-      localStorage.removeItem('jwtToken');
-    }, 3600000); // 1 hour in milliseconds
-  };
-
   return (
-    <div className="container mt-5">
-      <h3>Login</h3>
-      <p>Please enter your username and password to login.</p>
-      <div className="mb-3">
-        <label htmlFor="username" className="form-label">Username</label>
-        <input type="text" className="form-control" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">Password</label>
-        <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button className="btn btn-primary" onClick={handleLogin}>Login</button>
-    </div>
+    <ThemeProvider theme={createTheme()}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
-};
+}
 
-export default LoginForm;
+export default SignIn;
