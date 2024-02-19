@@ -25,7 +25,7 @@ const LoginForm = () => {
       setError("");
 
       const response = await fetch(
-        "https://garbage-tracking-backend.onrender.com/admin/login",
+        "http://52.63.51.138:5500/admin/login",
         {
           method: "POST",
           headers: {

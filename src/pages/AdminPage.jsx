@@ -2,19 +2,32 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import AssignForm from "../components/AssignForm";
+import { useNavigate } from "react-router-dom";
+
 
 const App = () => {
   // State to store data from APIs
   const [areas, setAreas] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const handleAddDriverClick = () => {
+    navigate("/adddriver"); // Redirect to Add Driver page
+  };
+  const handleAddVehicleClick = () => {
+    navigate("/addvehicle"); // Redirect to Add Vehicle page
+  };
+  const handleNextClick = () => {
+    navigate("/dashboard"); // Redirect to Add Driver page
+  };
 
   useEffect(() => {
     // Fetching data from APIs
     const fetchAreas = async () => {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://garbage-tracking-backend.onrender.com/areas/get-all-areas/",
+        "http://52.63.51.138:5500/areas/get-all-areas/",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,7 +41,7 @@ const App = () => {
     const fetchDrivers = async () => {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers",
+        "http://52.63.51.138:5500/drivers/get-all-drivers",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,7 +55,7 @@ const App = () => {
     const fetchVehicles = async () => {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles",
+        "http://52.63.51.138:5500/vehicles/get-vehicles",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -84,17 +97,17 @@ const App = () => {
       </Container>
       <div className="d-flex flex-row gap-4 justify-content-around w-100 position-fixed bottom-0 p-2 bg-light" style={{ zIndex: 1 }}>
         <Col>
-          <Button variant="primary" className="w-100 p-2">
+          <Button variant="primary" className="w-100 p-2" onClick={handleAddDriverClick}>
             Add Driver
           </Button>
         </Col>
         <Col>
-          <Button variant="secondary" className="w-100 p-2">
+          <Button variant="secondary" className="w-100 p-2" onClick={handleAddVehicleClick}>
             Add Vehicle
           </Button>
         </Col>
         <Col>
-          <Button variant="secondary" className="w-100 p-2">
+          <Button variant="secondary" className="w-100 p-2" onClick={handleNextClick}>
             Next
           </Button>
         </Col>

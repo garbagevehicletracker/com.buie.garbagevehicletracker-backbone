@@ -1,22 +1,35 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
 const YourComponent = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     driverId: '',
     phoneNumbers: '',
-    gender: 'male', // default value, you can change it based on your requirement
+    gender: 'male',
     age: '',
     image: '',
   });
 
-  const handleSubmit = async () => {
-    // Assuming you have fetched the JWT token from local storage
+  const handleCloseClick = () => {
+    navigate("/admin");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    
+    // Check if all required fields are filled out
+    if (!formData.name || !formData.driverId || !formData.phoneNumbers || !formData.age || !formData.image) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('https://garbage-tracking-backend.onrender.com/drivers/create-driver', {
+      const response = await fetch('http://52.63.51.138:5500/drivers/create-driver', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +55,7 @@ const YourComponent = () => {
     <Container>
       <Row className="justify-content-md-center">
         <Col md={6}>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -50,6 +63,7 @@ const YourComponent = () => {
                 placeholder="Enter name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required // Make the field required
               />
             </Form.Group>
 
@@ -60,6 +74,7 @@ const YourComponent = () => {
                 placeholder="Enter Driver ID"
                 value={formData.driverId}
                 onChange={(e) => setFormData({ ...formData, driverId: e.target.value })}
+                required // Make the field required
               />
             </Form.Group>
 
@@ -70,6 +85,7 @@ const YourComponent = () => {
                 placeholder="Enter Phone Number"
                 value={formData.phoneNumbers}
                 onChange={(e) => setFormData({ ...formData, phoneNumbers: e.target.value })}
+                required // Make the field required
               />
             </Form.Group>
 
@@ -100,6 +116,7 @@ const YourComponent = () => {
                 placeholder="Enter Age"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                required // Make the field required
               />
             </Form.Group>
 
@@ -110,13 +127,12 @@ const YourComponent = () => {
                 placeholder="Enter Photograph URL"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                required // Make the field required
               />
             </Form.Group>
 
-            <Button variant="primary" onClick={handleSubmit}>
-              Submit
-            </Button>{' '}
-            <Button variant="secondary">Close</Button>
+            <Button variant="primary" type="submit">Submit</Button>
+            <Button variant="secondary" onClick={handleCloseClick}>Close</Button>
           </Form>
         </Col>
       </Row>

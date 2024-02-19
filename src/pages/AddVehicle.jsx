@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from "react-router-dom";
 
-const API_URL = 'https://garbage-tracking-backend.onrender.com/vehicles/create-vehicle';
+const API_URL = 'http://52.63.51.138:5500/vehicles/create-vehicle';
 
 const VehicleForm = () => {
   const [registrationNo, setRegistrationNo] = useState('');
   const [vehicleId, setVehicleId] = useState('');
   const [capacity, setCapacity] = useState('');
   const [size, setSize] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const handleCloseClick = () => {
+    navigate("/admin"); // Redirect to Add Admin page
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,7 +94,7 @@ const VehicleForm = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary mr-2">Submit</button>
-        <button type="button" className="btn btn-secondary" onClick={() => alert('Close button clicked')}>Close</button>
+        <button type="button" className="btn btn-secondary"  onClick={handleCloseClick}>Close</button>
       </form>
     </div>
   );

@@ -39,7 +39,7 @@ const AssignForm = ({ area, driver, vehicle }) => {
       setIsSubmitting(true);
 
       // Make API request here using the data and token
-      fetch('https://garbage-tracking-backend.onrender.com/work/create-assign', {
+      fetch('http://52.63.51.138:5500/work/create-assign', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
