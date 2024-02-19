@@ -1,119 +1,108 @@
-import React, { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-const AdminPage = () => {
-  return (
-    <div>
-      <h2>Welcome to Admin Page!</h2>
-      {/* You can add more content or components for the admin page */}
-    </div>
-  );
-}
-
-const SignIn = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Use useNavigate hook
+  useEffect(() => {
+    // Add cleanup logic if needed
+    return () => {
+      // Cleanup logic
+    };
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://garbage-tracking-backend.onrender.com/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      setLoading(true);
+      setError("");
+
+      const response = await fetch(
+        "https://garbage-tracking-backend.onrender.com/admin/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
 
         // Store token in localStorage or a state management solution of your choice
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
 
         // Redirect to AdminPage on successful login
-        navigate('/admin'); // Replace '/admin' with your desired route
-
-        // You can use the token in the headers for subsequent requests
-        // Example: headers: { 'Authorization': `Bearer ${token}` }
-
+        navigate("/admin"); // Use navigate from React Router
       } else {
-        console.error('Login failed');
+        console.error("Login failed");
+        setError("Login failed. Please try again."); // Set an appropriate error message
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error("Error during login:", error);
+      setError("An unexpected error occurred. Please try again."); // Set an appropriate error message
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <ThemeProvider theme={createTheme()}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-  );
-}
+    <>
+      <Container className=" rounded-lg p-4  d-flex flex-column align-items-center justify-content-center min-vh-100">
+        <div className="d-flex flex-column align-items-center ">
+          <h1 className="text-center mb-4 fw-bold">Log in</h1>
+          <Form onSubmit={handleLogin}>
+            <Form.Group className="mb-4">
+              <Form.Label htmlFor="username">Username</Form.Label>
+              <Form.Control
+                type="text"
+                id="username"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={loading}
+              />
+            </Form.Group>
 
-export default SignIn;
+            <Form.Group className="mb-4">
+              <Form.Label htmlFor="password">Password</Form.Label>
+              <Form.Control
+                type="password"
+                id="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </Form.Group>
+
+            {error && (
+              <div className="text-center text-danger mb-4">{error}</div>
+            )}
+
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100 btn-lg"
+              disabled={loading}
+            >
+              {loading ? "Logging In..." : "Log In"}
+            </Button>
+          </Form>
+        </div>
+      </Container>
+    </>
+  );
+};
+
+export default LoginForm;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const API_URL = 'https://garbage-tracking-backend.onrender.com/vehicles/create-vehicle';

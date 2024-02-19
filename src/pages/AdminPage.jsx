@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Button, Col, Row } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import AssignForm from '../components/AssignForm';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useState } from "react";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import AssignForm from "../components/AssignForm";
 
 const App = () => {
   // State to store data from APIs
@@ -12,34 +12,43 @@ const App = () => {
   useEffect(() => {
     // Fetching data from APIs
     const fetchAreas = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://garbage-tracking-backend.onrender.com/areas/get-all-areas/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "https://garbage-tracking-backend.onrender.com/areas/get-all-areas/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       setAreas(data);
     };
 
     const fetchDrivers = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       setDrivers(data);
     };
 
     const fetchVehicles = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       setVehicles(data);
     };
@@ -51,39 +60,46 @@ const App = () => {
   }, []);
 
   return (
-    <Container>
-      <Row>
-        {/* Future Section */}
-        <Col xl={12}>
-          <div style={{ width: '90%', height: '70vh', padding: '20px', margin: 'auto' , overflow: 'scroll'}}>
-            <h2>Future Section</h2>
-            {/* Displaying data from APIs and rendering AssignForm for each area */}
-            {areas.map((area) => (
-              <AssignForm
-                key={area._id}
-                area={area}
-                driver={drivers}
-                vehicle={vehicles}
-              />
-            ))}
-          </div>
-        </Col>
-      </Row>
-
-      {/* Buttons Section */}
-      <Row className="mt-3">
+    <div className="d-flex flex-column align-items-center bg-light overflow-x-hidden m-0 p-3 min-vh-100">
+      <Container fluid className="p-0 d-flex flex-column flex-grow-1">
+        <Row>
+          <Col
+            xl={12}
+            className="position-relative overflow-auto"
+            style={{ maxHeight: "90vh" }}
+          >
+            <h2 className="mb-4">Future Section</h2>
+            <Card className="bg-light my-4 p-4">
+              {areas.map((area) => (
+                <AssignForm
+                  key={area._id}
+                  area={area}
+                  driver={drivers}
+                  vehicle={vehicles}
+                />
+              ))}
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+      <div className="d-flex flex-row gap-4 justify-content-around w-100 position-fixed bottom-0 p-2 bg-light" style={{ zIndex: 1 }}>
         <Col>
-          <Button variant="primary">
+          <Button variant="primary" className="w-100 p-2">
             Add Driver
           </Button>
         </Col>
         <Col>
-          <Button variant="secondary">
+          <Button variant="secondary" className="w-100 p-2">
             Add Vehicle
           </Button>
         </Col>
-      </Row>
-    </Container>
+        <Col>
+          <Button variant="secondary" className="w-100 p-2">
+            Next
+          </Button>
+        </Col>
+      </div>
+    </div>
   );
 };
 
