@@ -63,7 +63,7 @@ const CreateAssignComponent = ({
 
     setIsSubmitting(true);
 
-    fetch("/api/work/create-assign", {
+    fetch("https://garbage-tracking-backend.onrender.com/work/create-assign", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

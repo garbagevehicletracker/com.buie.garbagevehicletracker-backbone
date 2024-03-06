@@ -1,3 +1,4 @@
+// import dotenv from "dotenv";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -5,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
 import "../styles/LoginForm.css";
+// dotenv.config();
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -29,7 +31,7 @@ const LoginForm = () => {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/admin/login", {
+      const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
