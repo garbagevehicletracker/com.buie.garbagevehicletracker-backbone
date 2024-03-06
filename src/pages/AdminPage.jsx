@@ -43,9 +43,9 @@ const AdminPage = () => {
       }
     };
 
-    fetchData("api/areas/get-all-areas/", setAreas);
-    fetchData("api/drivers/get-all-drivers", setDrivers);
-    fetchData("api/vehicles/get-vehicles", setVehicles);
+    fetchData("https://garbage-tracking-backend.onrender.com/areas/get-all-areas/", setAreas);
+    fetchData("https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers", setDrivers);
+    fetchData("https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles", setVehicles);
 
     // Fetch selected assigns for each area
     areas.forEach((area) => {
