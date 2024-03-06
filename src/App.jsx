@@ -1,19 +1,19 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import LoginForm from "./pages/LoginForm";
-import AdminPage from "./pages/AdminPage";
-import AddVehicle from "./pages/AddVehicle";
 import AddDriver from "./pages/AddDriver";
+import AddVehicle from "./pages/AddVehicle";
+import AdminPage from "./pages/AdminPage";
 import Dashboard from "./pages/Dashboard";
+import LoginForm from "./pages/LoginForm";
+
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" exact element={<LoginForm />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/addvehicle" element={<AddVehicle />} />
-        <Route path="/adddriver" element={<AddDriver />} />
-
+        <Route path="/addVehicle" element={<AddVehicle />} />
+        <Route path="/addDriver" element={<AddDriver />} />
       </Routes>
     </Router>
   );

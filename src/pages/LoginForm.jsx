@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
+import "../styles/LoginForm.css";
+
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,11 +14,13 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Add cleanup logic if needed
-    return () => {
-      // Cleanup logic
-    };
-  }, []);
+    // Check if a token exists in local storage
+    const token = localStorage.getItem("token");
+    if (token) {
+      // Redirect to homepage if token exists
+      navigate("/admin");
+    }
+  }, [navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -24,42 +29,44 @@ const LoginForm = () => {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
-        "http://52.63.51.138:5500/admin/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
 
-        // Store token in localStorage or a state management solution of your choice
         localStorage.setItem("token", token);
 
-        // Redirect to AdminPage on successful login
-        navigate("/admin"); // Use navigate from React Router
+        navigate("/admin");
       } else {
         console.error("Login failed");
-        setError("Login failed. Please try again."); // Set an appropriate error message
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during login:", error);
-      setError("An unexpected error occurred. Please try again."); // Set an appropriate error message
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <Container className=" rounded-lg p-4  d-flex flex-column align-items-center justify-content-center min-vh-100">
-        <div className="d-flex flex-column align-items-center ">
+    <div className="form-body">
+      <Container className="rounded-lg p-4 d-flex flex-column align-items-center justify-content-center min-vh-100 login-container">
+        {loading && (
+          <div className="spinner-overlay">
+            <Spinner animation="border" role="status" variant="success">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        )}
+        <div className="login-form">
           <h1 className="text-center mb-4 fw-bold">Log in</h1>
           <Form onSubmit={handleLogin}>
             <Form.Group className="mb-4">
@@ -71,6 +78,8 @@ const LoginForm = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={loading}
+                className="custom-input"
+                required
               />
             </Form.Group>
 
@@ -83,6 +92,8 @@ const LoginForm = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
+                className="custom-input"
+                required
               />
             </Form.Group>
 
@@ -91,7 +102,7 @@ const LoginForm = () => {
             )}
 
             <Button
-              variant="primary"
+              variant="success"
               type="submit"
               className="w-100 btn-lg"
               disabled={loading}
@@ -101,7 +112,7 @@ const LoginForm = () => {
           </Form>
         </div>
       </Container>
-    </>
+    </div>
   );
 };
 

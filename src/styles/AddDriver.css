@@ -1,0 +1,32 @@
+.your-component-form {
+    border: 1px solid #4CAF50; /* Green border */
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .your-component-form:focus {
+    outline: none;
+    border-color: #45a049; /* Darker green on focus */
+  }
+  
+  .your-component-form label {
+    color: #247226; /* Green color */
+  }
+  
+  .your-component-form .btn {
+    margin-top: 20px;
+    margin-right: 10px;
+  }
+  
+  .your-component-form .btn-primary {
+    background-color: #4CAF50; /* Green button */
+    border-color: #4CAF50;
+  }
+  
+  .your-component-form .btn-secondary {
+    background-color: #6c757d; /* Gray button */
+    border-color: #6c757d;
+  }
+  
+  

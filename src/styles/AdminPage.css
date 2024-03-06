@@ -1,0 +1,20 @@
+.custom-input {
+    border: 1px solid #4CAF50; /* Green border */
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .custom-input:focus {
+    outline: none;
+    border-color: #45a049; /* Darker green on focus */
+  }
+  
+  .btn-lg {
+    font-size: 1.2rem; /* Increase button font size */
+  }
+  
+  .login-form h1 {
+    color: #247226; /* Green color */
+  }
+  

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
-
-const API_URL = 'http://52.63.51.138:5500/vehicles/create-vehicle';
+import withAuth from '../utils/withAuth';
+const API_URL = '/api/vehicles/create-vehicle';
 
 const VehicleForm = () => {
   const [registrationNo, setRegistrationNo] = useState('');
@@ -99,5 +99,5 @@ const VehicleForm = () => {
     </div>
   );
 };
-
-export default VehicleForm;
+const VehicleFormWithAuth = withAuth(VehicleForm);
+export default VehicleFormWithAuth;

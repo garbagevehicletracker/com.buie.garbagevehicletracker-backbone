@@ -1,79 +1,84 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import AssignForm from "../components/AssignForm";
 import { useNavigate } from "react-router-dom";
+import CreateAssignComponent from "../components/CreateAssignComponent";
+import withAuth from "../utils/withAuth";
 
-
-const App = () => {
-  // State to store data from APIs
+const AdminPage = () => {
   const [areas, setAreas] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [selectedAssigns, setSelectedAssigns] = useState({});
+  const navigate = useNavigate();
 
   const handleAddDriverClick = () => {
-    navigate("/adddriver"); // Redirect to Add Driver page
+    navigate("/addDriver");
   };
+
   const handleAddVehicleClick = () => {
-    navigate("/addvehicle"); // Redirect to Add Vehicle page
+    navigate("/addVehicle");
   };
+
   const handleNextClick = () => {
-    navigate("/dashboard"); // Redirect to Add Driver page
+    navigate("/");
   };
 
   useEffect(() => {
-    // Fetching data from APIs
-    const fetchAreas = async () => {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "http://52.63.51.138:5500/areas/get-all-areas/",
-        {
+    const fetchData = async (url, setter) => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
         }
-      );
-      const data = await response.json();
-      setAreas(data);
+        const data = await response.json();
+        setter(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    const fetchDrivers = async () => {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "http://52.63.51.138:5500/drivers/get-all-drivers",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    fetchData("api/areas/get-all-areas/", setAreas);
+    fetchData("api/drivers/get-all-drivers", setDrivers);
+    fetchData("api/vehicles/get-vehicles", setVehicles);
+
+    // Fetch selected assigns for each area
+    areas.forEach((area) => {
+      fetchData(
+        `https://garbage-tracking-backend.onrender.com/work/get-all-assigns/${area._id}`,
+        (data) => {
+          setSelectedAssigns((prevAssigns) => ({
+            ...prevAssigns,
+            [area._id]: data,
+          }));
         }
       );
-      const data = await response.json();
-      setDrivers(data);
-    };
+    });
+  }, [areas]);
+  const handleDeleteAssign = (assignId) => {
+    // Define your logic here to delete the assignment
+    // For example:
+    console.log("Deleting assignment with ID:", assignId);
 
-    const fetchVehicles = async () => {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "http://52.63.51.138:5500/vehicles/get-vehicles",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const data = await response.json();
-      setVehicles(data);
-    };
-
-    // Call the fetch functions
-    fetchAreas();
-    fetchDrivers();
-    fetchVehicles();
-  }, []);
+    // Update selectedAssigns state after deleting the assignment
+    setSelectedAssigns((prevAssigns) => {
+      const updatedAssigns = { ...prevAssigns };
+      Object.keys(updatedAssigns).forEach((areaId) => {
+        updatedAssigns[areaId] = Array.isArray(updatedAssigns[areaId])
+          ? updatedAssigns[areaId].filter((assign) => assign._id !== assignId)
+          : [];
+      });
+      return updatedAssigns;
+    });
+  };
 
   return (
-    <div className="d-flex flex-column align-items-center bg-light overflow-x-hidden m-0 p-3 min-vh-100">
+    <div className="d-flex flex-column align-items-center bg-light overflow-x-hidden m-0 p-3 min-vh-90">
       <Container fluid className="p-0 d-flex flex-column flex-grow-1">
         <Row>
           <Col
@@ -81,39 +86,70 @@ const App = () => {
             className="position-relative overflow-auto"
             style={{ maxHeight: "90vh" }}
           >
-            <h2 className="mb-4">Future Section</h2>
+            <h2 className="mb-4" style={{ color: "#247226" }}>
+              Future Section
+            </h2>
             <Card className="bg-light my-4 p-4">
               {areas.map((area) => (
-                <AssignForm
+                <motion.div
                   key={area._id}
-                  area={area}
-                  driver={drivers}
-                  vehicle={vehicles}
-                />
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="animated-item"
+                >
+                  <CreateAssignComponent
+                    area={area}
+                    drivers={drivers}
+                    vehicles={vehicles}
+                    selectedAssign={selectedAssigns[area._id]}
+                    onDeleteAssign={handleDeleteAssign}
+                  />
+                </motion.div>
               ))}
             </Card>
           </Col>
         </Row>
       </Container>
-      <div className="d-flex flex-row gap-4 justify-content-around w-100 position-fixed bottom-0 p-2 bg-light" style={{ zIndex: 1 }}>
+      <motion.div
+        className="d-flex flex-row gap-4 justify-content-around w-100 position-fixed bottom-0 p-2 bg-light"
+        style={{ zIndex: 1 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+      >
         <Col>
-          <Button variant="primary" className="w-100 p-2" onClick={handleAddDriverClick}>
+          <Button
+            variant="success"
+            className="w-100 p-2"
+            onClick={handleAddDriverClick}
+          >
             Add Driver
           </Button>
         </Col>
         <Col>
-          <Button variant="secondary" className="w-100 p-2" onClick={handleAddVehicleClick}>
+          <Button
+            variant="success"
+            className="w-100 p-2"
+            onClick={handleAddVehicleClick}
+          >
             Add Vehicle
           </Button>
         </Col>
         <Col>
-          <Button variant="secondary" className="w-100 p-2" onClick={handleNextClick}>
+          <Button
+            variant="primary"
+            className="w-100 p-2"
+            onClick={handleNextClick}
+          >
             Next
           </Button>
         </Col>
-      </div>
+      </motion.div>
     </div>
   );
 };
 
-export default App;
+// export default AdminPage;
+const AdminPageWithAuth = withAuth(AdminPage);
+export default AdminPageWithAuth;

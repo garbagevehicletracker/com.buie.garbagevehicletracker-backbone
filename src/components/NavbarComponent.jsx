@@ -1,16 +1,14 @@
-// import React from 'react';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-
-// Remove the unused import statement
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+// import React from "react";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ user }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Clear user data from localStorage
-    navigate('/login'); // Navigate to the login page
+    localStorage.removeItem("user"); // Clear user data from localStorage
+    navigate("/login"); // Navigate to the login page
   };
 
   return (

@@ -1,0 +1,84 @@
+.form-body {
+    position: relative; /* Ensure pseudo-element is positioned relative to this */
+    background-image: url('/3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(3, 44, 3, 0.715); /* Dark green with low opacity */
+  }
+  
+  .form-body::before {
+    content: ""; /* Required for pseudo-element */
+    position: absolute; /* Position the pseudo-element */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: inherit; /* Inherit parent's background color */
+    /* filter: brightness(0.8) saturate(120%) contrast(100%); */
+  }
+  
+  .login-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: slide-up 0.5s ease forwards;
+    z-index: 1;
+  }
+  
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+    .custom-input {
+      border: 1px solid #4CAF50; /* Green border */
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .custom-input:focus {
+      outline: none;
+      border-color: #45a049; /* Darker green on focus */
+    }
+    
+    .btn-lg {
+      font-size: 1.2rem; /* Increase button font size */
+    }
+    
+    .login-form h1 {
+      color: #247226; /* Green color */
+    }
+    
+
+    /* LoginForm.css */
+
+/* Define styles for the spinner overlay */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.688); /* Semi-transparent white background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the spinner overlay is above other content */
+}
+
+/* Center the spinner horizontally and vertically */
+.spinner-overlay .spinner-border {
+  width: 4rem; /* Adjust the spinner size as needed */
+  height: 4rem; /* Adjust the spinner size as needed */
+}

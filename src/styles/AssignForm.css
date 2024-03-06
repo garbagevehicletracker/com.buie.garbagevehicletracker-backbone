@@ -1,0 +1,16 @@
+.message {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+
+.message.success {
+  color: green;
+}
+
+.message.success p {
+  margin: 0;
+}
+
+.message:not(.success) {
+  opacity: 0;
+}
