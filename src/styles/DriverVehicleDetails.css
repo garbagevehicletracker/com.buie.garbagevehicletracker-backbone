@@ -1,0 +1,60 @@
+/* DriverVehicleDetails.css */
+.card {
+    background-color: #f8f9fa; /* Light gray background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .card-title {
+    color: #247226; /* Green color */
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .driver-info,
+  .vehicle-info {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .driver-image {
+    width: 150px; /* Adjust image width */
+    height: 150px; /* Adjust image height */
+    border-radius: 50%; /* Make the image circular */
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .btn-custom,
+  .btn-custom-secondary {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-custom {
+    background-color: #247226; /* Green color */
+    color: white;
+  }
+  
+  .btn-custom:hover {
+    background-color: #1e5f1c; /* Darker green on hover */
+    color: white;
+  }
+  
+  .btn-custom-secondary {
+    background-color: #bdbdbd; /* Gray color */
+    color: #000; /* Black color */
+  }
+  
+  .btn-custom-secondary:hover {
+    background-color: #acacac; /* Darker gray on hover */
+  }
+  

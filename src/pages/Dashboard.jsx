@@ -1,7 +1,13 @@
 // import React from "react";
 // import "../styles/home.css";
+// import { Button } from "bootstrap";
+// import { useNavigate } from "react-router-dom";
 import withAuth from "../utils/withAuth";
 const Dashboard = () => {
+  // const navigate = useNavigate();
+  // const handleNavigate = () => {
+  //   navigate("/driver-vehicle-Details");
+  // };
   return (
     <div>
       <div className="container">
@@ -11,7 +17,9 @@ const Dashboard = () => {
         </section>
         <section className="profiles" id="profilesSection">
           <h2>Profiles</h2>
-          <ul></ul>
+          <ul>
+            <button >Show details</button>
+          </ul>
         </section>
       </div>
     </div>
@@ -20,4 +28,4 @@ const Dashboard = () => {
 
 const DashboardWithAuth = withAuth(Dashboard);
 
-export default DashboardWithAuth ;
+export default DashboardWithAuth;
