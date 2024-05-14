@@ -26,11 +26,11 @@ const LoginForm = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     try {
       setLoading(true);
       setError("");
-
+  
       const response = await fetch(
         "https://garbage-tracking-backend.onrender.com/admin/login",
         {
@@ -41,13 +41,14 @@ const LoginForm = () => {
           body: JSON.stringify({ username, password }),
         }
       );
-
+  
       if (response.ok) {
         const data = await response.json();
-        const token = data.token;
-
+        const { token, result } = data;
+  
         localStorage.setItem("token", token);
-
+        localStorage.setItem("user", JSON.stringify(result)); // Store user data
+  
         navigate("/admin");
       } else {
         console.error("Login failed");
@@ -60,9 +61,12 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
+  
+  
+  
 
   return (
-    <div className="form-body">
+    <div className="form-body ">
       <Container className="rounded-lg p-4 d-flex flex-column align-items-center justify-content-center min-vh-100 login-container">
         {loading && (
           <div className="spinner-overlay">

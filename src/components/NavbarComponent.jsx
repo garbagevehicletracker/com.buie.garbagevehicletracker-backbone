@@ -1,34 +1,40 @@
 import PropTypes from "prop-types";
-// import React from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const NavBar = ({ user }) => {
+const NavBar = ({user,setUser}) => {
   const navigate = useNavigate();
+  // const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // Clear user data from localStorage
-    navigate("/login"); // Navigate to the login page
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
   };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
-        <Navbar.Brand href="#home">Your App Name</Navbar.Brand>
+      <Container >
+        <Navbar.Brand href="#home">Municipality Garbage Vehicle Monitoring System </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            {/* Add more Nav.Link components for other navigation options */}
-          </Nav>
-          {user ? (
+          {user && (
             <Nav className="ml-auto">
-              <Navbar.Text className="mr-3">Welcome, {user.name}</Navbar.Text>
+              <Navbar.Text className="mr-3">Welcome, {user.username}</Navbar.Text>
               <Button variant="outline-light" onClick={handleLogout}>
                 Logout
               </Button>
             </Nav>
-          ) : null}
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

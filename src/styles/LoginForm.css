@@ -5,6 +5,7 @@
     background-size: cover;
     background-position: center;
     background-color: rgba(3, 44, 3, 0.715); /* Dark green with low opacity */
+    
   }
   
   .form-body::before {
