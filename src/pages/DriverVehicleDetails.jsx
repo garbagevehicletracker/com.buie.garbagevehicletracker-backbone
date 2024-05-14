@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/DriverVehicleDetails.css";
+import withAuth from "../utils/withAuth";
 const DriverVehicleDetails = () => {
   const [driverData, setDriverData] = useState(null);
   const [vehicleData, setVehicleData] = useState(null);
@@ -7,13 +8,20 @@ const DriverVehicleDetails = () => {
   // Function to fetch data from the API
   async function fetchData(apiUrl, setData) {
     try {
-      const response = await fetch(apiUrl);
+      const token =   localStorage.getItem('token');
+    
+      const response = await fetch(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setData(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
+  
 
   // Function to get query parameter from URL
   function getQueryParameter(name) {
@@ -23,15 +31,16 @@ const DriverVehicleDetails = () => {
 
   useEffect(() => {
     const driverId = getQueryParameter("driverId");
-    const vehicleNo = getQueryParameter("vehicleNo");
+    const vehicleId = getQueryParameter("vehicleId");
+    console.log(driverId, vehicleId);
     // const areaId = getQueryParameter('areaId');
 
     fetchData(
-      `https://garbage-collect-backend.onrender.com/get-driver/${driverId}`,
+      `https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers/${driverId}`,
       setDriverData
     );
     fetchData(
-      `https://garbage-collect-backend.onrender.com/get-vehicle/${vehicleNo}`,
+      `https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles/${vehicleId}`,
       setVehicleData
     );
   }, []);
@@ -40,6 +49,7 @@ const DriverVehicleDetails = () => {
     window.history.back();
   }
 
+  console.log(vehicleData)
   return (
     <div className="container">
       <div className="row mt-5">
@@ -74,7 +84,7 @@ const DriverVehicleDetails = () => {
               <h2 className="card-title">Vehicle Details</h2>
               {vehicleData && (
                 <>
-                  <p className="vehicle-info">Vehicle ID: {vehicleData.id}</p>
+                  <p className="vehicle-info">Vehicle ID: {vehicleData.vehicleId}</p>
                   <p className="vehicle-info">
                     Registration No: {vehicleData.registrationNo}
                   </p>
@@ -103,4 +113,6 @@ const DriverVehicleDetails = () => {
   );
 };
 
-export default DriverVehicleDetails;
+const DriverVehicleDetailsWithAuth = withAuth(DriverVehicleDetails);
+
+export default DriverVehicleDetailsWithAuth;
