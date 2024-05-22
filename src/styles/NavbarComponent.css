@@ -1,0 +1,40 @@
+/* NavBar.css */
+.navbar-custom {
+    background-color: #1e5f1c !important; /* Green shade */
+    display: flex;
+    justify-content: center; /* Center the content */
+    min-height: 50px;
+  }
+  
+  .navbar-brand-custom {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff !important;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .navbar-text-custom {
+    color: #ffffff;
+    margin-right: 20px;
+  }
+  
+  .navbar-button-custom {
+    color: #ffffff;
+    border-color: #ffffff;
+    margin-left: 10px;
+  }
+  
+  .navbar-button-custom:hover {
+    background-color: #ff3131a3;
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  

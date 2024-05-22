@@ -1,55 +1,74 @@
 import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 import "../styles/DriverVehicleDetails.css";
 import withAuth from "../utils/withAuth";
+
 const DriverVehicleDetails = () => {
   const [driverData, setDriverData] = useState(null);
   const [vehicleData, setVehicleData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Function to fetch data from the API
-  async function fetchData(apiUrl, setData) {
+  const fetchData = async (url, setState) => {
     try {
-      const token =   localStorage.getItem('token');
-    
-      const response = await fetch(apiUrl, {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await response.json();
-      setData(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+      setState(data);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError(err.message);
     }
-  }
-  
+  };
 
-  // Function to get query parameter from URL
-  function getQueryParameter(name) {
+  const getQueryParameter = (name) => {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-  }
+    const encodedParam = urlParams.get(name);
+    return encodedParam ? atob(encodedParam) : null;
+  };
 
   useEffect(() => {
     const driverId = getQueryParameter("driverId");
     const vehicleId = getQueryParameter("vehicleId");
-    console.log(driverId, vehicleId);
-    // const areaId = getQueryParameter('areaId');
+    if (!driverId || !vehicleId) {
+      setError("Invalid URL parameters");
+      setLoading(false);
+      return;
+    }
 
-    fetchData(
-      `https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers/${driverId}`,
-      setDriverData
-    );
-    fetchData(
-      `https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles/${vehicleId}`,
-      setVehicleData
-    );
+    const fetchDetails = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchData(
+          `https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers/${driverId}`,
+          setDriverData
+        ),
+        fetchData(
+          `https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles/${vehicleId}`,
+          setVehicleData
+        ),
+      ]);
+      setLoading(false);
+    };
+
+    fetchDetails();
   }, []);
 
-  function goBack() {
+  const goBack = () => {
     window.history.back();
-  }
+  };
 
-  console.log(vehicleData)
+  if (loading) return <div className="d-flex justify-content-center mt-5"><Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner></div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="container">
       <div className="row mt-5">
@@ -67,12 +86,8 @@ const DriverVehicleDetails = () => {
                   <p className="driver-info">Name: {driverData.name}</p>
                   <p className="driver-info">Age: {driverData.age}</p>
                   <p className="driver-info">Gender: {driverData.gender}</p>
-                  <p className="driver-info">
-                    Driver ID: {driverData.driverId}
-                  </p>
-                  <p className="driver-info">
-                    Phone: {driverData.phoneNumbers}
-                  </p>
+                  <p className="driver-info">Driver ID: {driverData.driverId}</p>
+                  <p className="driver-info">Phone: {driverData.phoneNumbers}</p>
                 </>
               )}
             </div>
@@ -84,7 +99,9 @@ const DriverVehicleDetails = () => {
               <h2 className="card-title">Vehicle Details</h2>
               {vehicleData && (
                 <>
-                  <p className="vehicle-info">Vehicle ID: {vehicleData.vehicleId}</p>
+                  <p className="vehicle-info">
+                    Vehicle ID: {vehicleData.vehicleId}
+                  </p>
                   <p className="vehicle-info">
                     Registration No: {vehicleData.registrationNo}
                   </p>

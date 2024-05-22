@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 import "../styles/ShowDetailsComponent.css";
 import withAuth from "../utils/withAuth";
 
@@ -9,97 +10,72 @@ const ShowDetailsComponent = ({ areaId, driverId, vehicleId }) => {
   const [areaDetails, setAreaDetails] = useState(null);
   const [vehicleDetails, setVehicleDetails] = useState(null);
   const [driverDetails, setDriverDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getAuthToken = () => {
-      // Implement logic to retrieve authToken from localStorage or cookies
-      // Example:
-      return localStorage.getItem("token");
-    };
-console.log(vehicleId,driverId,areaId)
+    const getAuthToken = () => localStorage.getItem("token");
+
     const authToken = getAuthToken();
-    const fetchAreaDetails = async () => {
+
+    const fetchData = async (url, setState) => {
       try {
-        const response = await fetch(
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setState(data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err.message);
+      }
+    };
+
+    const fetchDetails = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchData(
           `https://garbage-tracking-backend.onrender.com/areas/get-area-details/${areaId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setAreaDetails(data);
-        } else {
-          console.error("Error fetching area details");
-        }
-      } catch (error) {
-        console.error("Error fetching area details:", error);
-      }
-    };
-
-    const fetchVehicleDetails = async () => {
-      try {
-        console.log(vehicleId)
-        const response = await fetch(
+          setAreaDetails
+        ),
+        fetchData(
           `https://garbage-tracking-backend.onrender.com/vehicles/get-vehicles/${vehicleId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setVehicleDetails(data);
-          
-        } else {
-          console.error("Error fetching vehicle details");
-        }
-      } catch (error) {
-        console.error("Error fetching vehicle details:", error);
-      }
-    };
-
-    const fetchDriverDetails = async () => {
-      try {
-        const response = await fetch(
+          setVehicleDetails
+        ),
+        fetchData(
           `https://garbage-tracking-backend.onrender.com/drivers/get-all-drivers/${driverId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setDriverDetails(data);
-        } else {
-          console.error("Error fetching driver details");
-        }
-      } catch (error) {
-        console.error("Error fetching driver details:", error);
-      }
+          setDriverDetails
+        ),
+      ]);
+      setLoading(false);
     };
 
-    // Fetch area details, vehicle details, and driver details
-    fetchAreaDetails();
-    fetchVehicleDetails();
-    fetchDriverDetails();
+    fetchDetails();
   }, [areaId, driverId, vehicleId]);
 
   const handleShowDetails = () => {
-    const url = `/driver-vehicle-details?areaId=${areaId}&driverId=${driverId}&vehicleId=${vehicleId}`;
+    const encodedAreaId = btoa(areaId);
+    const encodedDriverId = btoa(driverId);
+    const encodedVehicleId = btoa(vehicleId);
+    const url = `/driver-vehicle-details?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
     navigate(url);
   };
+
+  if (loading) return <div className="d-flex justify-content-center mt-5"><Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner></div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="card mb-3 shadow-sm">
       <div className="row g-0">
         <div className="col-md-2">
           <img
             src={driverDetails?.image}
-            className="img-fluid  rounded-circle"
+            className="img-fluid rounded-circle"
             alt="Driver"
           />
         </div>
@@ -108,7 +84,6 @@ console.log(vehicleId,driverId,areaId)
             <h5 className="card-title">{areaDetails?.name}</h5>
             <p className="card-text">{driverDetails?.name}</p>
             <p className="card-text">{vehicleDetails?.registrationNo}</p>
-         
           </div>
         </div>
         <div className="col-md-5">
@@ -122,6 +97,7 @@ console.log(vehicleId,driverId,areaId)
     </div>
   );
 };
+
 const ShowDetailsComponentWithAuth = withAuth(ShowDetailsComponent);
 
 export default ShowDetailsComponentWithAuth;
