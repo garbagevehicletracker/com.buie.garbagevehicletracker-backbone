@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Button, Container, Form, Spinner } from 'react-bootstrap';
-import withAuth from '../utils/withAuth';
-import CryptoJS from 'crypto-js';
+import withAuth from "../utils/withAuth";
+// import CryptoJS from 'crypto-js';
 
 const FormBody = styled.div`
   display: flex;
@@ -78,12 +78,12 @@ const CustomRadioWrapper = styled.div`
 const AddDriver = ({ onClose }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    driverId: '',
-    phoneNumbers: '',
-    gender: 'male',
-    age: '',
-    image: '',
+    name: "",
+    driverId: "",
+    phoneNumbers: "",
+    gender: "male",
+    age: "",
+    image: "",
   });
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
@@ -97,72 +97,83 @@ const AddDriver = ({ onClose }) => {
     setFile(e.target.files[0]);
   };
 
-
   const uploadImage = async (file) => {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'myCloud'); // replace with your actual upload preset if needed
+    formData.append("file", file);
+    formData.append("upload_preset", "myCloud"); // replace with your actual upload preset if needed
     // formData.append('api_key', '956523777125515');
     // formData.append('timestamp', Math.floor(Date.now() / 1000));
-    
+
     // Cloudinary signature
     // const apiSecret = 'RZZmSeAm1yjDlNdA35yCQpQMMuk';
     // const paramsToSign = `timestamp=${Math.floor(Date.now() / 1000)}&upload_preset=your_upload_preset${apiSecret}`;
     // const signature = CryptoJS.SHA1(paramsToSign).toString(CryptoJS.enc.Hex);
     // formData.append('signature', signature);
-  
+
     try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/diukwdy4w/image/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/diukwdy4w/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await response.json();
       return data.secure_url;
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
       return null;
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.driverId || !formData.phoneNumbers || !formData.age || !file) {
-      alert('Please fill out all required fields.');
+    if (
+      !formData.name ||
+      !formData.driverId ||
+      !formData.phoneNumbers ||
+      !formData.age ||
+      !file
+    ) {
+      alert("Please fill out all required fields.");
       return;
     }
 
     setLoading(true);
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     try {
       const imageUrl = await uploadImage(file);
 
       if (!imageUrl) {
-        alert('Error uploading image. Please try again.');
+        alert("Error uploading image. Please try again.");
         setLoading(false);
         return;
       }
 
       const newFormData = { ...formData, image: imageUrl };
-      console.log(newFormData)
-      const response = await fetch('https://municipality-garbage-tracking.onrender.com/drivers/create-driver', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(newFormData),
-      });
+      console.log(newFormData);
+      const response = await fetch(
+        "https://garbage-tracking-backend.onrender.com/drivers/create-driver",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newFormData),
+        }
+      );
 
       if (response.ok) {
-        console.log('Data submitted successfully');
+        console.log("Data submitted successfully");
         handleCloseClick();
       } else {
-        console.error('Error submitting data');
+        console.error("Error submitting data");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -187,7 +198,9 @@ const AddDriver = ({ onClose }) => {
               type="text"
               placeholder="Enter name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
             />
           </Form.Group>
@@ -198,7 +211,9 @@ const AddDriver = ({ onClose }) => {
               type="text"
               placeholder="Enter Driver ID"
               value={formData.driverId}
-              onChange={(e) => setFormData({ ...formData, driverId: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, driverId: e.target.value })
+              }
               required
             />
           </Form.Group>
@@ -209,7 +224,9 @@ const AddDriver = ({ onClose }) => {
               type="text"
               placeholder="Enter Phone Number"
               value={formData.phoneNumbers}
-              onChange={(e) => setFormData({ ...formData, phoneNumbers: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, phoneNumbers: e.target.value })
+              }
               required
             />
           </Form.Group>
@@ -221,15 +238,15 @@ const AddDriver = ({ onClose }) => {
                 type="radio"
                 label="Male"
                 value="male"
-                checked={formData.gender === 'male'}
-                onChange={() => setFormData({ ...formData, gender: 'male' })}
+                checked={formData.gender === "male"}
+                onChange={() => setFormData({ ...formData, gender: "male" })}
               />
               <Form.Check
                 type="radio"
                 label="Female"
                 value="female"
-                checked={formData.gender === 'female'}
-                onChange={() => setFormData({ ...formData, gender: 'female' })}
+                checked={formData.gender === "female"}
+                onChange={() => setFormData({ ...formData, gender: "female" })}
               />
             </CustomRadioWrapper>
           </Form.Group>
@@ -240,22 +257,25 @@ const AddDriver = ({ onClose }) => {
               type="number"
               placeholder="Enter Age"
               value={formData.age}
-              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, age: e.target.value })
+              }
               required
             />
           </Form.Group>
 
           <Form.Group controlId="formImage" className="mb-3">
             <LabelStyled>Photograph</LabelStyled>
-            <InputStyled
-              type="file"
-              onChange={handleFileChange}
-              required
-            />
+            <InputStyled type="file" onChange={handleFileChange} required />
           </Form.Group>
 
           <div className="text-center">
-            <ButtonStyled variant="primary" type="submit" className="submit-button" disabled={loading}>
+            <ButtonStyled
+              variant="primary"
+              type="submit"
+              className="submit-button"
+              disabled={loading}
+            >
               {loading ? "Submitting..." : "Submit"}
             </ButtonStyled>
             {/* <ButtonStyled variant="secondary" onClick={handleCloseClick} disabled={loading}>
