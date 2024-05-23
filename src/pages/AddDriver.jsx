@@ -101,14 +101,6 @@ const AddDriver = ({ onClose }) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "myCloud"); // replace with your actual upload preset if needed
-    // formData.append('api_key', '956523777125515');
-    // formData.append('timestamp', Math.floor(Date.now() / 1000));
-
-    // Cloudinary signature
-    // const apiSecret = 'RZZmSeAm1yjDlNdA35yCQpQMMuk';
-    // const paramsToSign = `timestamp=${Math.floor(Date.now() / 1000)}&upload_preset=your_upload_preset${apiSecret}`;
-    // const signature = CryptoJS.SHA1(paramsToSign).toString(CryptoJS.enc.Hex);
-    // formData.append('signature', signature);
 
     try {
       const response = await fetch(

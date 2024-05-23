@@ -4,6 +4,7 @@ import "../styles/DriverVehicleDetails.css";
 import withAuth from "../utils/withAuth";
 
 const DriverVehicleDetails = () => {
+  const [areaData, setAreaData] = useState(null);
   const [driverData, setDriverData] = useState(null);
   const [vehicleData, setVehicleData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,9 +37,11 @@ const DriverVehicleDetails = () => {
   };
 
   useEffect(() => {
+    const areaData = getQueryParameter("areaId");
+    setAreaData(areaData);
     const driverId = getQueryParameter("driverId");
     const vehicleId = getQueryParameter("vehicleId");
-    if (!driverId || !vehicleId) {
+    if (!areaData || !driverId || !vehicleId) {
       setError("Invalid URL parameters");
       setLoading(false);
       return;
@@ -66,7 +69,23 @@ const DriverVehicleDetails = () => {
     window.history.back();
   };
 
-  if (loading) return <div className="d-flex justify-content-center mt-5"><Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner></div>;
+  const handleTracking = (areaData, vehicleId, driverId) => {
+    const encodedAreaId = btoa(areaData);
+    const encodedDriverId = btoa(driverId);
+    const encodedVehicleId = btoa(vehicleId);
+    const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
+
+    window.location.href = url;
+  };
+
+  if (loading)
+    return (
+      <div className="d-flex justify-content-center mt-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -86,8 +105,12 @@ const DriverVehicleDetails = () => {
                   <p className="driver-info">Name: {driverData.name}</p>
                   <p className="driver-info">Age: {driverData.age}</p>
                   <p className="driver-info">Gender: {driverData.gender}</p>
-                  <p className="driver-info">Driver ID: {driverData.driverId}</p>
-                  <p className="driver-info">Phone: {driverData.phoneNumbers}</p>
+                  <p className="driver-info">
+                    Driver ID: {driverData.driverId}
+                  </p>
+                  <p className="driver-info">
+                    Phone: {driverData.phoneNumbers}
+                  </p>
                 </>
               )}
             </div>
@@ -114,7 +137,13 @@ const DriverVehicleDetails = () => {
               <div className="btn mt-3 d-flex justify-content-end gap-5">
                 <button
                   className="btn mr-2 btn-custom"
-                  onClick={() => console.log("Track button clicked")}
+                  onClick={() => {
+                    handleTracking(
+                      areaData,
+                      vehicleData.vehicleId,
+                      driverData.driverId
+                    );
+                  }}
                 >
                   Track
                 </button>

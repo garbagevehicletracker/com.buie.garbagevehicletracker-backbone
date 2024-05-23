@@ -31,3 +31,29 @@
     box-shadow: 0 0 20px var(--box-shadow-hover-color);
   }
   
+  /* styles/ShowDetailsComponent.css */
+
+/* Define a common class for loading skeletons */
+.skeleton-loading {
+  display: inline-block;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+/* Apply common styles to all loading skeletons */
+.skeleton-loading {
+  margin-bottom: 0.5rem;
+}
+
+/* Specific styles for different skeleton elements */
+.skeleton-loading.title {
+  width: 100px;
+}
+
+.skeleton-loading.driver-name {
+  width: 80px;
+}
+
+.skeleton-loading.vehicle-registration {
+  width: 60px;
+}

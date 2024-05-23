@@ -21,28 +21,60 @@ const NavBar = ({ user, setUser }) => {
     navigate("/login");
   };
 
+  const handleAdmin = () => {
+    navigate("/admin");
+  };
+
+  const handleDashboard = () => {
+    navigate("/");
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="navbar-custom">
-      <Container>
+      <Container fluid>
         <Navbar.Brand href="#home" className="navbar-brand-custom">
           Municipality Garbage Vehicle Monitoring System
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {user && (
-            <Nav className="navbar-left">
-              <Navbar.Text className="navbar-text-custom">
-                Welcome, {user.username}
-              </Navbar.Text>
+          <Nav className="ms-auto align-items-center">
+            {user ? (
+              <>
+                <Button
+                  variant="outline-light"
+                  className="navbar-button me-2"
+                  onClick={handleDashboard}
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  variant="outline-light"
+                  className="navbar-button me-2"
+                  onClick={handleAdmin}
+                >
+                  Admin
+                </Button>
+                <Nav.Item className="navbar-text-custom me-2">
+                  Welcome, {user.username}
+                </Nav.Item>
+                <Button
+                  variant="outline-light"
+                  className="navbar-button-custom"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
               <Button
                 variant="outline-light"
-                className="navbar-button-custom"
-                onClick={handleLogout}
+                className="navbar-button active"
+                onClick={() => navigate("/login")}
               >
-                Logout
+                Login
               </Button>
-            </Nav>
-          )}
+            )}
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>

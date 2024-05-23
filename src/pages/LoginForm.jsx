@@ -1,4 +1,3 @@
-// import dotenv from "dotenv";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -6,9 +5,9 @@ import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
 import "../styles/LoginForm.css";
-// dotenv.config();
 
-const LoginForm = () => {
+// eslint-disable-next-line react/prop-types
+const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,21 +15,19 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if a token exists in local storage
     const token = localStorage.getItem("token");
     if (token) {
-      // Redirect to homepage if token exists
-      navigate("/admin");
+      navigate("/");
     }
   }, [navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-  
+
     try {
       setLoading(true);
       setError("");
-  
+
       const response = await fetch(
         "https://garbage-tracking-backend.onrender.com/admin/login",
         {
@@ -41,32 +38,29 @@ const LoginForm = () => {
           body: JSON.stringify({ username, password }),
         }
       );
-  
+
       if (response.ok) {
         const data = await response.json();
         const { token, result } = data;
-  
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(result)); // Store user data
-  
-        navigate("/admin");
+
+        setUser(result); // Set the parsed user object
+
+        navigate("/");
       } else {
-        console.error("Login failed");
         setError("Login failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error during login:", error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-  
-  
-  
 
   return (
-    <div className="form-body ">
+    <div className="form-body">
       <Container className="rounded-lg p-4 d-flex flex-column align-items-center justify-content-center min-vh-100 login-container">
         {loading && (
           <div className="spinner-overlay">

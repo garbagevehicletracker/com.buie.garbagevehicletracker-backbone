@@ -1,29 +1,21 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddDriver from "./pages/AddDriver";
 import AddVehicle from "./pages/AddVehicle";
 import AdminPage from "./pages/AdminPage";
 import Dashboard from "./pages/Dashboard";
 import LoginForm from "./pages/LoginForm";
 import DriverVehicleDetails from "./pages/DriverVehicleDetails";
-import TrackingMap from "./components/TrackingMap";
-import NavbarComponent from "./components/NavbarComponent"
+import TrackingMap from "./pages/TrackingMap";
+import NavbarComponent from "./components/NavbarComponent";
 
 const App = () => {
   const [user, setUser] = useState(null);
 
-  // Function to retrieve user data from wherever it's stored
-  const getUserData = () => {
-    // Example: retrieve user data from localStorage
+  useEffect(() => {
     const userData = localStorage.getItem("user");
-    return userData ? JSON.parse(userData) : null;
-  };
-
-  // Set initial user data on component mount
-  useState(() => {
-    const userData = getUserData();
     if (userData) {
-      setUser(userData);
+      setUser(JSON.parse(userData));
     }
   }, []);
 
@@ -31,7 +23,7 @@ const App = () => {
     <Router>
       <NavbarComponent user={user} setUser={setUser} />
       <Routes>
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm setUser={setUser} />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/addVehicle" element={<AddVehicle />} />
