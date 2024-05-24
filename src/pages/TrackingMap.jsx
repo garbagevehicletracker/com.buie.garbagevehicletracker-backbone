@@ -37,6 +37,7 @@
 // };
 
 // export default YourComponent;
+"use-clint";
 
 import { useEffect, useState } from "react";
 import MapComponent from "../components/MapComponent";
