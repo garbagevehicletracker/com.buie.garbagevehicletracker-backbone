@@ -136,6 +136,7 @@ const TrackingMap = () => {
     </div>
   );
 };
+
 const TrackingMapWithAuth = withAuth(TrackingMap);
 
 export default TrackingMapWithAuth;
