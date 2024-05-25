@@ -1,57 +1,22 @@
-// // /frontend/src/components/MapComponent.jsx
-// import { useEffect, useState } from "react";
-// import io from "socket.io-client";
 
-// const YourComponent = () => {
-//   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
-
-//   useEffect(() => {
-//     // Connect to the server's socket.io instance
-//     const socket = io('https://garbage-tracking-backend.onrender.com/'); // Update this URL
-//     // const socket = io("http://localhost:5500"); // Update this URL
-
-//     // Listen for 'connect' event
-//     socket.on("connect", () => {
-//       console.log("Socket connected successfully!");
-//     });
-
-//     // Listen for 'coordinatesUpdated' event
-//     socket.on("coordinatesUpdated", (updatedCoordinates) => {
-//       // Update the state with the new coordinates
-//       setCoordinates(updatedCoordinates);
-//     });
-
-//     // Cleanup the socket connection when the component unmounts
-//     return () => {
-//       socket.disconnect();
-//     };
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Real-time Coordinates</h1>
-//       <p>Latitude: {coordinates.latitude}</p>
-//       <p>Longitude: {coordinates.longitude}</p>
-//     </div>
-//   );
-// };
-
-// export default YourComponent;
-"use client";
-
-import { useEffect, useState } from "react";
+// Path: src/pages/TrackingMap.jsx
+// TrackingMap.js
+import  { useEffect, useState } from "react";
 import MapComponent from "../components/MapComponent";
 import withAuth from "../utils/withAuth";
+import Skeleton from "../components/Skeleton";
 
 const TrackingMap = () => {
   const getQueryParameter = (name) => {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedParam = urlParams.get(name);
-    return encodedParam ? atob(encodedParam) : null;
+    // return encodedParam ? atob(encodedParam) : null;
+    return encodedParam;
   };
 
   const [areaData, setAreaData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [areaId, setAreaId] = useState(null);
   const [driverId, setDriverId] = useState(null);
   const [vehicleId, setVehicleId] = useState(null);
@@ -89,16 +54,26 @@ const TrackingMap = () => {
         setAreaData(data);
       } catch (error) {
         console.error("Error fetching area data:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAreaData();
+    if (areaId) {
+      fetchAreaData();
+    } else {
+      setError("Invalid area ID");
+      setLoading(false);
+    }
   }, [areaId]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Skeleton />;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
   }
 
   return (
@@ -141,3 +116,4 @@ const TrackingMap = () => {
 const TrackingMapWithAuth = withAuth(TrackingMap);
 
 export default TrackingMapWithAuth;
+

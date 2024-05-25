@@ -70,9 +70,12 @@ const DriverVehicleDetails = () => {
   };
 
   const handleTracking = (areaData, vehicleId, driverId) => {
-    const encodedAreaId = btoa(areaData);
-    const encodedDriverId = btoa(driverId);
-    const encodedVehicleId = btoa(vehicleId);
+    // const encodedAreaId = btoa(areaData);
+    // const encodedDriverId = btoa(driverId);
+    // const encodedVehicleId = btoa(vehicleId);
+    const encodedAreaId = areaData;
+    const encodedDriverId = driverId;
+    const encodedVehicleId = vehicleId;
     const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
 
     window.location.href = url;

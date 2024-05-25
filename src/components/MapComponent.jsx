@@ -1,7 +1,8 @@
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { GoogleMap, Marker, InfoWindow, Polyline, useJsApiLoader } from "@react-google-maps/api";
 import PropTypes from "prop-types";
 import withAuth from "../utils/withAuth";
+import io from "socket.io-client";
 
 const containerStyle = {
   width: "100%",
@@ -17,20 +18,14 @@ const MapComponent = ({ areaData, driverId, vehicleId }) => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
-
   const [center, setCenter] = useState({
     lat: 23.0654247,
     lng: 87.3026587,
   });
-
-  const onLoad = useCallback((map) => {
-    setMap(map);
-  }, []);
-
-  const onUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
-
+  const [coordinates, setCoordinates] = useState([]);
+  const [polylinePath, setPolylinePath] = useState([]);
+console.log(coordinates)
+console.log(polylinePath)
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
@@ -73,6 +68,40 @@ const MapComponent = ({ areaData, driverId, vehicleId }) => {
     fetchCoordinates();
   }, [areaData]);
 
+  useEffect(() => {
+    // Connect to the server's socket.io instance
+    const socket = io('https://production-backend-3olq.onrender.com');
+
+    // Listen for 'connect' event
+    socket.on("connect", () => {
+      console.log("Socket connected successfully!");
+    });
+
+    // Listen for 'coordinatesUpdated' event
+    socket.on("coordinatesUpdated", (updatedCoordinates) => {
+      // Update the state with the new coordinates
+      setCoordinates(prevCoordinates => [...prevCoordinates, updatedCoordinates]);
+    });
+
+    // Cleanup the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Update polyline path when coordinates change
+    setPolylinePath(coordinates.map(coord => ({ lat: coord.latitude, lng: coord.longitude })));
+  }, [coordinates]);
+
+  const onLoad = (map) => {
+    setMap(map);
+  };
+
+  const onUnmount = () => {
+    setMap(null);
+  };
+
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
   };
@@ -104,6 +133,7 @@ const MapComponent = ({ areaData, driverId, vehicleId }) => {
           </div>
         </InfoWindow>
       )}
+      <Polyline path={polylinePath} />
     </GoogleMap>
   ) : null;
 };
