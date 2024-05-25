@@ -76,7 +76,7 @@ const DriverVehicleDetails = () => {
     const encodedAreaId = areaData;
     const encodedDriverId = driverId;
     const encodedVehicleId = vehicleId;
-    const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
+    const url = `/tracking-details?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
 
     window.location.href = url;
   };

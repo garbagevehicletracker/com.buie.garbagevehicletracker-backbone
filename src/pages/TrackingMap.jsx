@@ -76,45 +76,40 @@ const TrackingMap = () => {
     return <p>Error: {error}</p>;
   }
 
-  // return (
-  //   <div style={{ display: "flex", height: "100%" }}>
-  //     <div
-  //       style={{
-  //         flex: "1",
-  //         height: "100%",
-  //         overflow: "hidden",
-  //         padding: "10px",
-  //       }}
-  //     >
-  //       <MapComponent
-  //         areaData={areaData}
-  //         driverId={driverId}
-  //         vehicleId={vehicleId}
-  //       />
-  //     </div>
-  //     <div
-  //       style={{
-  //         flex: "0 0 20%",
-  //         backgroundColor: "#f0f0f0",
-  //         padding: "20px",
-  //         margin: "10px",
-  //       }}
-  //     >
-  //       <h2>Header Text</h2>
-  //       <p>This is the side content.</p>
-  //       <div>
-  //         <h3>Decoded Parameters</h3>
-  //         <p>Area ID: {areaId}</p>
-  //         <p>Driver ID: {driverId}</p>
-  //         <p>Vehicle ID: {vehicleId}</p>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-  return(
-    <>
-    <h2>Hellow</h2>
-    </>
+  return (
+    <div style={{ display: "flex", height: "100%" }}>
+      <div
+        style={{
+          flex: "1",
+          height: "100%",
+          overflow: "hidden",
+          padding: "10px",
+        }}
+      >
+        <MapComponent
+          areaData={areaData}
+          driverId={driverId}
+          vehicleId={vehicleId}
+        />
+      </div>
+      <div
+        style={{
+          flex: "0 0 20%",
+          backgroundColor: "#f0f0f0",
+          padding: "20px",
+          margin: "10px",
+        }}
+      >
+        <h2>Header Text</h2>
+        <p>This is the side content.</p>
+        <div>
+          <h3>Decoded Parameters</h3>
+          <p>Area ID: {areaId}</p>
+          <p>Driver ID: {driverId}</p>
+          <p>Vehicle ID: {vehicleId}</p>
+        </div>
+      </div>
+    </div>
   );
 };
 
