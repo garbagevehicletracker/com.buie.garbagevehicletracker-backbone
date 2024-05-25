@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "../styles/DriverVehicleDetails.css";
 import withAuth from "../utils/withAuth";
 
@@ -9,6 +10,7 @@ const DriverVehicleDetails = () => {
   const [vehicleData, setVehicleData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const fetchData = async (url, setState) => {
     try {
@@ -70,16 +72,13 @@ const DriverVehicleDetails = () => {
   };
 
   const handleTracking = (areaData, vehicleId, driverId) => {
-    // const encodedAreaId = btoa(areaData);
-    // const encodedDriverId = btoa(driverId);
-    // const encodedVehicleId = btoa(vehicleId);
-    const encodedAreaId = areaData;
-    const encodedDriverId = driverId;
-    const encodedVehicleId = vehicleId;
-    // const url = `/tracking-details?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
-    const url ="/track"
+    const encodedAreaId = btoa(areaData);
+    const encodedDriverId = btoa(driverId);
+    const encodedVehicleId = btoa(vehicleId);
+    const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
 
-    window.location.href = url;
+    // Using navigate to programmatically navigate
+    navigate(url);
   };
 
   if (loading)
