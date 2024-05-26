@@ -1,10 +1,8 @@
-
-// Path: src/pages/TrackingMap.jsx
-// TrackingMap.js
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MapComponent from "../components/MapComponent";
 import withAuth from "../utils/withAuth";
 import Skeleton from "../components/Skeleton";
+import "../styles/TrackingMap.css"; // Ensure you have the CSS file imported
 
 const TrackingMap = () => {
   const getQueryParameter = (name) => {
@@ -19,6 +17,7 @@ const TrackingMap = () => {
   const [areaId, setAreaId] = useState(null);
   const [driverId, setDriverId] = useState(null);
   const [vehicleId, setVehicleId] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const areaId = getQueryParameter("areaId");
@@ -75,30 +74,23 @@ const TrackingMap = () => {
     return <p>Error: {error}</p>;
   }
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div style={{ display: "flex", height: "100%" }}>
-      <div
-        style={{
-          flex: "1",
-          height: "100%",
-          overflow: "hidden",
-          padding: "10px",
-        }}
-      >
+    <div className={`tracking-map-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
+      <div className="map-container">
         <MapComponent
           areaData={areaData}
           driverId={driverId}
           vehicleId={vehicleId}
         />
+        <button className="toggle-sidebar-button" onClick={toggleSidebar}>
+          {isSidebarOpen ? "Close" : "Open"} Sidebar
+        </button>
       </div>
-      <div
-        style={{
-          flex: "0 0 20%",
-          backgroundColor: "#f0f0f0",
-          padding: "20px",
-          margin: "10px",
-        }}
-      >
+      <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
         <h2>Header Text</h2>
         <p>This is the side content.</p>
         <div>
@@ -115,4 +107,3 @@ const TrackingMap = () => {
 const TrackingMapWithAuth = withAuth(TrackingMap);
 
 export default TrackingMapWithAuth;
-
