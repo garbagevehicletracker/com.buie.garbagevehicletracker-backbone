@@ -1,68 +1,85 @@
-.form-body {
-    position: relative; /* Ensure pseudo-element is positioned relative to this */
-    background-image: url('/3.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-color: rgba(3, 44, 3, 0.715); /* Dark green with low opacity */
-    
-  }
-  
-  .form-body::before {
-    content: ""; /* Required for pseudo-element */
-    position: absolute; /* Position the pseudo-element */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: inherit; /* Inherit parent's background color */
-    /* filter: brightness(0.8) saturate(120%) contrast(100%); */
-  }
-  
-  .login-form {
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    background-color: #ffffff; /* White */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    animation: slide-up 0.5s ease forwards;
-    z-index: 1;
-  }
-  
-  @keyframes slide-up {
-    0% {
-      opacity: 0;
-      transform: translateY(100px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-    .custom-input {
-      border: 1px solid #4CAF50; /* Green border */
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    
-    .custom-input:focus {
-      outline: none;
-      border-color: #45a049; /* Darker green on focus */
-    }
-    
-    .btn-lg {
-      font-size: 1.2rem; /* Increase button font size */
-    }
-    
-    .login-form h1 {
-      color: #247226; /* Green color */
-    }
-    
+/* Ensure html and body take up full height */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scroll */
+}
 
-    /* LoginForm.css */
+/* Form body to take full viewport height */
+.form-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  background-image: url('/3.jpg'); /* Background image */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden; /* Prevent scroll */
+}
+
+/* Green overlay */
+.form-body::before {
+  content: ""; /* Required for pseudo-element */
+  position: absolute; /* Position the pseudo-element */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(3, 44, 3, 0.637); /* Dark green with low opacity */
+  z-index: 1; /* Ensure it is behind other content */
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Full height */
+}
+
+.login-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffff; /* White */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: slide-up 0.5s ease forwards;
+  z-index: 1;
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-input {
+  border: 1px solid #4CAF50; /* Green border */
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: #45a049; /* Darker green on focus */
+}
+
+.btn-lg {
+  font-size: 1.2rem; /* Increase button font size */
+}
+
+.login-form h1 {
+  color: #247226; /* Green color */
+}
 
 /* Define styles for the spinner overlay */
 .spinner-overlay {

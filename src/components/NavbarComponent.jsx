@@ -32,34 +32,37 @@ const NavBar = ({ user, setUser }) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="navbar-custom">
       <Container fluid>
-        <Navbar.Brand href="#home" className="navbar-brand-custom">
+        <Navbar.Brand className="navbar-brand-custom navbar-brand-desktop">
           Municipality Garbage Vehicle Monitoring System
         </Navbar.Brand>
+        <Navbar.Brand className="navbar-brand-custom navbar-brand-mobile">
+          Garbage Monitoring
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse id="basic-navbar-nav" className="animate-navbar">
           <Nav className="ms-auto align-items-center">
             {user ? (
               <>
                 <Button
                   variant="outline-light"
-                  className="navbar-button me-2"
+                  className="navbar-button me-2 w-100"
                   onClick={handleDashboard}
                 >
                   Dashboard
                 </Button>
                 <Button
                   variant="outline-light"
-                  className="navbar-button me-2"
+                  className="navbar-button me-2 w-100"
                   onClick={handleAdmin}
                 >
                   Admin
                 </Button>
-                <Nav.Item className="navbar-text-custom me-2">
+                <Nav.Item className="navbar-text-custom me-2 w-100 text-center">
                   Welcome, {user.username}
                 </Nav.Item>
                 <Button
                   variant="outline-light"
-                  className="navbar-button-custom"
+                  className="navbar-button-custom w-100"
                   onClick={handleLogout}
                 >
                   Logout
@@ -68,7 +71,7 @@ const NavBar = ({ user, setUser }) => {
             ) : (
               <Button
                 variant="outline-light"
-                className="navbar-button active"
+                className="navbar-button active w-100"
                 onClick={() => navigate("/login")}
               >
                 Login

@@ -1,40 +1,105 @@
 /* NavBar.css */
 .navbar-custom {
-    background-color: #1e5f1c !important; /* Green shade */
-    display: flex;
-    justify-content: center; /* Center the content */
-    min-height: 50px;
+  background-color: #1e5f1c !important; /* Green shade */
+  display: flex;
+  justify-content: center; /* Center the content */
+  min-height: 50px;
+  position: relative;
+}
+
+.navbar-brand-custom {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff !important;
+}
+
+.navbar-text-custom {
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.navbar-button-custom {
+  color: #ffffff;
+  border-color: #ffffff;
+  margin-left: 10px;
+}
+
+.navbar-button-custom:hover {
+  background-color: #ff3131a3;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Mobile view */
+.navbar-brand-desktop {
+  display: block;
+}
+
+.navbar-brand-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand-desktop {
+    display: none;
   }
-  
-  .navbar-brand-custom {
-    font-size: 1.5rem;
+
+  .navbar-brand-mobile {
+    display: block;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #ffffff !important;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
   }
-  
+
+  .navbar-collapse {
+    background: rgba(30, 90, 40, 0.5); /* Low opacity background */
+  }
+
+  .navbar-collapse.show {
+    animation: slideIn 0.3s forwards;
+  }
+
+  .navbar-collapse.collapsing {
+    animation: slideOut 0.3s forwards;
+  }
+
+  .navbar-button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
   .navbar-text-custom {
-    color: #ffffff;
-    margin-right: 20px;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
   }
-  
-  .navbar-button-custom {
-    color: #ffffff;
-    border-color: #ffffff;
-    margin-left: 10px;
+}
+
+/* Animations */
+/* @keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
   }
-  
-  .navbar-button-custom:hover {
-    background-color: #ff3131a3;
-    color: #ffffff;
-    border-color: #ffffff;
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+} */

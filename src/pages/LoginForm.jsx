@@ -61,7 +61,7 @@ const LoginForm = ({ setUser }) => {
 
   return (
     <div className="form-body">
-      <Container className="rounded-lg p-4 d-flex flex-column align-items-center justify-content-center min-vh-100 login-container">
+      <Container className="login-container">
         {loading && (
           <div className="spinner-overlay">
             <Spinner animation="border" role="status" variant="success">

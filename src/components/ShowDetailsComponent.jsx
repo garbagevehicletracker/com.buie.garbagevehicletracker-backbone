@@ -77,7 +77,7 @@ const ShowDetailsComponent = ({ areaId, driverId, vehicleId }) => {
           ) : (
             <img
               src={driverDetails?.image}
-              className="img-fluid rounded-circle"
+              className="img-fluid driver-image"
               alt="Driver"
             />
           )}
