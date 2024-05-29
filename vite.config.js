@@ -11,7 +11,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/socket": {
-        target: "https://garbage-tracking-backend.onrender.com", // Use the same target as /api
+        target: "https://production-backend-3olq.onrender.com", // Use the same target as /api
         changeOrigin: true,
         ws: true,
       },

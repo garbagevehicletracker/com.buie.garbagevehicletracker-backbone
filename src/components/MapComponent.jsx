@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { GoogleMap, Marker, InfoWindow, Polyline, useJsApiLoader } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  Polyline,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import PropTypes from "prop-types";
 import withAuth from "../utils/withAuth";
 import io from "socket.io-client";
@@ -9,7 +15,8 @@ const containerStyle = {
   height: "90vh",
 };
 
-const MapComponent = ({ areaData, driverId, vehicleId }) => {
+const MapComponent = ({ areaData, driverData, vehicleId }) => {
+  console.log(vehicleId);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyC8rsCM1PxiuuyL7FdtvXimGMSR-0dtkB0",
@@ -24,8 +31,9 @@ const MapComponent = ({ areaData, driverId, vehicleId }) => {
   });
   const [coordinates, setCoordinates] = useState([]);
   const [polylinePath, setPolylinePath] = useState([]);
-console.log(coordinates)
-console.log(polylinePath)
+  console.log(coordinates);
+  console.log(polylinePath);
+
   useEffect(() => {
     const fetchCoordinates = async () => {
       try {
@@ -70,7 +78,7 @@ console.log(polylinePath)
 
   useEffect(() => {
     // Connect to the server's socket.io instance
-    const socket = io('https://production-backend-3olq.onrender.com');
+    const socket = io("https://production-backend-3olq.onrender.com");
 
     // Listen for 'connect' event
     socket.on("connect", () => {
@@ -79,19 +87,32 @@ console.log(polylinePath)
 
     // Listen for 'coordinatesUpdated' event
     socket.on("coordinatesUpdated", (updatedCoordinates) => {
-      // Update the state with the new coordinates
-      setCoordinates(prevCoordinates => [...prevCoordinates, updatedCoordinates]);
+      if (updatedCoordinates.vehicleId === vehicleId) {
+        // Update the state with the new coordinates only if the vehicleId matches
+        setCoordinates((prevCoordinates) => [
+          ...prevCoordinates,
+          updatedCoordinates,
+        ]);
+      }
+    });
+
+    // Listen for 'dustbinVisited' event
+    socket.on("dustbinVisited", (data) => {
+      console.log(`Dustbin visited: ${data.id}`);
+      // Optionally, you could update the UI to indicate the visited dustbin
     });
 
     // Cleanup the socket connection when the component unmounts
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [vehicleId]);
 
   useEffect(() => {
     // Update polyline path when coordinates change
-    setPolylinePath(coordinates.map(coord => ({ lat: coord.latitude, lng: coord.longitude })));
+    setPolylinePath(
+      coordinates.map((coord) => ({ lat: coord.latitude, lng: coord.longitude }))
+    );
   }, [coordinates]);
 
   const onLoad = (map) => {
@@ -129,11 +150,12 @@ console.log(polylinePath)
           <div>
             <h1>Marker Info</h1>
             <p>Area Name: {areaData.name}</p>
+            <p>Driver Name: {driverData.name}</p>
             <p>This is the info window text for the marker.</p>
           </div>
         </InfoWindow>
       )}
-      <Polyline path={polylinePath} />
+      <Polyline path={polylinePath} options={{ strokeColor: "#FF0000" }} />
     </GoogleMap>
   ) : null;
 };
@@ -149,7 +171,10 @@ MapComponent.propTypes = {
     ),
     name: PropTypes.string.isRequired,
   }).isRequired,
-  driverId: PropTypes.string.isRequired,
+  driverData: PropTypes.shape({
+    driverId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
   vehicleId: PropTypes.string.isRequired,
 };
 

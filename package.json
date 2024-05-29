@@ -22,9 +22,12 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^6.1.6",
     "react-loading-skeleton": "^3.4.0",
+    "react-modal": "^3.16.1",
+    "react-progressbar.js": "^0.2.0",
     "react-router-dom": "^6.23.1",
     "socket.io-client": "^4.7.4",
     "styled-components": "^6.1.8"

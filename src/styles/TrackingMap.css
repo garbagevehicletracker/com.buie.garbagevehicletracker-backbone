@@ -1,69 +1,72 @@
 /* styles/TrackingMap.css */
 
 .tracking-map-container {
-    display: flex;
-    height: 90vh;
-    margin: 10px;
-    padding: auto;
-    overflow: hidden;
-    position: relative;
+  display: flex;
+  height: 90vh;
+  margin: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+.sidebar {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 80%;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.toggle-sidebar-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 20;
+}
+
+.toggle-sidebar-button:hover {
+  background-color: #0056b3;
+}
+
+@media (min-width: 768px) {
+  .tracking-map-container {
+    flex-direction: row;
   }
-  
-  .map-container {
-    flex: 1;
-    position: relative;
-  }
-  
+
   .sidebar {
-    flex: 0 0 20%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    margin: 10px;
-    transition: transform 0.3s ease;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 80%;
-    transform: translateX(100%);
+    position: static;
+    transform: none;
+    width: 40%;
+    height: auto;
+    box-shadow: none;
   }
-  
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  
+
   .toggle-sidebar-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    display: none;
   }
-  
-  .toggle-sidebar-button:hover {
-    background-color: var(--primary-color-dark);
+
+  .tracking-map-container.sidebar-open .sidebar {
+    transform: none;
   }
-  
-  /* Media queries for responsive design */
-  @media (min-width: 768px) {
-    .sidebar {
-      position: static;
-      transform: translateX(0);
-      width: auto;
-      height: auto;
-    }
-  
-    .toggle-sidebar-button {
-      display: none;
-    }
-  
-    .tracking-map-container.sidebar-open .sidebar {
-      transform: none;
-    }
-  }
-  
+}
