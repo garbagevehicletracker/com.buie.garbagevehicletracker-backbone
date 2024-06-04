@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Spinner from "react-bootstrap/Spinner";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../styles/LoginForm.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ setUser }) => {
@@ -12,6 +11,7 @@ const LoginForm = ({ setUser }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +59,10 @@ const LoginForm = ({ setUser }) => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="form-body">
       <Container className="login-container">
@@ -86,18 +90,25 @@ const LoginForm = ({ setUser }) => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-4 password-group">
               <Form.Label htmlFor="password">Password</Form.Label>
-              <Form.Control
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={loading}
-                className="custom-input"
-                required
-              />
+              <div className="password-wrapper">
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  className="custom-input"
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  onClick={togglePasswordVisibility}
+                  className="password-toggle-icon"
+                />
+              </div>
             </Form.Group>
 
             {error && (

@@ -175,7 +175,8 @@ const TrackingMap = () => {
         <hr />
         <div>
           <h3>Route Progress</h3>
-          <TrackingProgressBar points={points} areaData={areaData} />
+          <TrackingProgressBar areaData={areaData} points={points} circleSize={40} />
+
         </div>
       </div>
     </div>

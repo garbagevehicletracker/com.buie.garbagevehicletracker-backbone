@@ -10,15 +10,15 @@ const ProgressBarContainer = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 40px; /* Fixed width */
-  height: 40px; /* Fixed height */
+  width: ${props => props.size || 40}px; /* Dynamic width */
+  height: ${props => props.size || 40}px; /* Dynamic height */
   border-radius: 50%;
   background-color: ${props => (props.isVisited ? 'green' : 'gray')};
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 14px; /* Adjusted font size for better readability */
+  font-size: ${props => (props.size ? props.size / 3 : 14)}px; /* Adjust font size dynamically */
   position: relative;
   cursor: pointer;
 `;
@@ -33,7 +33,7 @@ const Line = styled.div`
 
 const TimeLabel = styled.span`
   position: absolute;
-  top: 45px; /* Adjusted to match new circle size */
+  top: ${props => props.size ? props.size + 5 : 45}px; /* Adjust dynamically based on circle size */
   font-size: 10px;
   color: black;
 `;
@@ -43,7 +43,7 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 300px;
-  max-width: 80%;
+  max-width: 90%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
@@ -68,7 +68,7 @@ const formatTime = (timestamp) => {
   });
 };
 
-const TrackingProgressBar = ({ areaData, points }) => {
+const TrackingProgressBar = ({ areaData, points, circleSize = 40 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedPoint, setSelectedPoint] = useState(null);
 
@@ -87,11 +87,12 @@ const TrackingProgressBar = ({ areaData, points }) => {
       {points.map((point, index) => (
         <React.Fragment key={index}>
           <Circle
+            size={circleSize}
             isVisited={point.isVisited}
             onClick={() => openModal(point)}
           >
             {index + 1}
-            {point.isVisited && <TimeLabel>{formatTime(point.visitedTimestamp)}</TimeLabel>}
+            {point.isVisited && <TimeLabel size={circleSize}>{formatTime(point.visitedTimestamp)}</TimeLabel>}
           </Circle>
           {index < points.length - 1 && (
             <Line isVisited={points[index].isVisited && points[index + 1].isVisited} />
@@ -109,10 +110,13 @@ const TrackingProgressBar = ({ areaData, points }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            inset: 'unset',
+            inset: '50% auto auto 50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1001, // Higher z-index
           },
           overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1000, // Ensuring overlay is behind content
           }
         }}
       >

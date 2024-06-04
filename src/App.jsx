@@ -8,6 +8,7 @@ import LoginForm from "./pages/LoginForm";
 import DriverVehicleDetails from "./pages/DriverVehicleDetails";
 import TrackingMap from "./pages/TrackingMap";
 import NavbarComponent from "./components/NavbarComponent";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/addDriver" element={<AddDriver />} />
         <Route path="/driver-vehicle-details" element={<DriverVehicleDetails />} />
         <Route path="/tracking" element={<TrackingMap />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

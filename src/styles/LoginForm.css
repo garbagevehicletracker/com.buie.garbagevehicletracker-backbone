@@ -73,6 +73,27 @@ html, body {
   border-color: #45a049; /* Darker green on focus */
 }
 
+.password-group {
+  position: relative;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #4CAF50; /* Green color */
+}
+
+.password-toggle-icon:hover {
+  color: #45a049; /* Darker green on hover */
+}
+
 .btn-lg {
   font-size: 1.2rem; /* Increase button font size */
 }

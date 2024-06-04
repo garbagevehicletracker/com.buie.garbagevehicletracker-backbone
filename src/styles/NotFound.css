@@ -1,0 +1,65 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .not-found-container h1 {
+    font-size: 3em;
+    margin: 20px 0;
+    color: #21aa41; /* Green color for the heading */
+  }
+  
+  .not-found-container p {
+    font-size: 1.2em;
+    margin: 10px 0 30px;
+    color: #006618; /* Green color for the paragraph */
+  }
+  
+  .not-found-image {
+    width: 100%;
+    max-width: 600px; /* Increased max-width for the image */
+    height: auto;
+    margin: 20px 0;
+  }
+  
+  .home-link {
+    text-decoration: none;
+  }
+  
+  .home-button {
+    background-color: #189735; /* Green background for the button */
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .home-button:hover {
+    background-color: #116423; /* Darker green on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  @media (max-width: 600px) {
+    .not-found-container h1 {
+      font-size: 2.2em;
+    }
+  
+    .not-found-container p {
+      font-size: 1.1em;
+    }
+  
+    .home-button {
+      font-size: 1em;
+      padding: 12px 25px;
+    }
+  }
