@@ -4,12 +4,24 @@ import ShowDetailsComponentSkeleton from "../components/ShowDetailsComponentSkel
 import NotificationComponent from "../components/NotificationComponent";
 import "../styles/Dashboard.css";
 import withAuth from '../utils/withAuth';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
   const [profiles, setProfiles] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingNotifications, setLoadingNotifications] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const notiDivStyle = {
+    height: '80vh',
+    overflowY: 'scroll', 
+  };
 
   const fetchProfiles = async () => {
     const authToken = getAuthToken();
@@ -19,6 +31,7 @@ const Dashboard = () => {
       Authorization: `Bearer ${authToken}`,
       'Content-Type': 'application/json'
     };
+
 
     try {
       const response = await fetch('https://garbage-tracking-backend.onrender.com/work/get-all-assigns', {
@@ -70,21 +83,24 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="row m-5">
-        <div className="col-md-6">
-          <section className="notification mb-4">
-            <h2>Notifications</h2>
-            {loadingNotifications
-              ? <p>Loading notifications...</p>
-              : notifications.map(notification => (
-                <NotificationComponent
-                  key={notification._id}
-                  message={notification.message}
-                />
-              ))}
-          </section>
+    <div className="dashboard-container overflow-hidden position-relative">
+      <button className="toggle-sidebar-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? "Close" : <FontAwesomeIcon icon={faBell} />}
+      </button>
+      <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <h2 className='mt-5'>Notifications</h2>
+        <div style={notiDivStyle}>
+          {loadingNotifications
+            ? <p>Loading notifications...</p>
+            : notifications.map(notification => (
+              <NotificationComponent
+                key={notification._id}
+                message={notification.message}
+              />
+            ))}
         </div>
+      </div>
+      <div className="row m-5">
         <div className="col-md-6">
           <section className="profiles mb-4">
             {loading
@@ -98,7 +114,7 @@ const Dashboard = () => {
                   driverId={profile.driverId}
                   vehicleId={profile.vehicleId}
                 />
-              ))}q
+              ))}
           </section>
         </div>
       </div>
