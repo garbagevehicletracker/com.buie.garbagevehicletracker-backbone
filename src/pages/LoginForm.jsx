@@ -7,7 +7,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ setUser }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,41 +23,51 @@ const LoginForm = ({ setUser }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     try {
       setLoading(true);
       setError("");
-
+  
       const response = await fetch(
-        "https://garbage-tracking-backend.onrender.com/admin/login",
+        "https://garbage-tracking-backend.onrender.com/user/login-user",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ email, password }),
         }
       );
-
+  
       if (response.ok) {
         const data = await response.json();
-        const { token, result } = data;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(result)); // Store user data
-
-        setUser(result); // Set the parsed user object
-
-        navigate("/");
+        console.log("Login response data:", data);
+  
+        const { token, user } = data;
+        console.log("User data received from server:", user);
+  
+        if (user) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user)); // Store user data
+          console.log("User data stored in localStorage:", localStorage.getItem("user"));
+  
+          setUser(user); // Update the user state
+          navigate("/");
+        } else {
+          setError("User data received from server is invalid.");
+        }
       } else {
         setError("Login failed. Please try again.");
       }
     } catch (error) {
+      console.error("An unexpected error occurred:", error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -77,13 +87,13 @@ const LoginForm = ({ setUser }) => {
           <h1 className="text-center mb-4 fw-bold">Log in</h1>
           <Form onSubmit={handleLogin}>
             <Form.Group className="mb-4">
-              <Form.Label htmlFor="username">Username</Form.Label>
+              <Form.Label htmlFor="email">Email</Form.Label>
               <Form.Control
-                type="text"
-                id="username"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                id="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
                 className="custom-input"
                 required
@@ -127,7 +137,6 @@ const LoginForm = ({ setUser }) => {
               variant="failed"
               onClick={() => navigate("/register")}
               className="w-100 btn-lg mt-2 border"
-              // disabled={loading}
             >
               Register
             </Button>

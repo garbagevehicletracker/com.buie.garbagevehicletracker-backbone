@@ -23,7 +23,7 @@ const RegisterForm = ({ setUser }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/");
+      navigate("/login");
     }
 
     const fetchAreas = async () => {
@@ -31,6 +31,9 @@ const RegisterForm = ({ setUser }) => {
         const response = await fetch("https://garbage-tracking-backend.onrender.com/areas/get-all-areas");
         const data = await response.json();
         setAreas(data);
+
+        // Log the fetched areas data
+        console.log("Fetched Areas Data:", data);
       } catch (error) {
         console.error("Error fetching areas:", error);
       }
@@ -45,6 +48,9 @@ const RegisterForm = ({ setUser }) => {
     try {
       setLoading(true);
       setError("");
+
+      // Log the registration data being sent
+      console.log("Registration Data:", { name, email, address, phoneNumber, area, userId, password });
 
       const response = await fetch(
         "https://garbage-tracking-backend.onrender.com/user/create-user",
@@ -61,8 +67,8 @@ const RegisterForm = ({ setUser }) => {
         const data = await response.json();
         const { token, result } = data;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(result)); // Store user data
+        // localStorage.setItem("token", token);
+        // localStorage.setItem("user", JSON.stringify(result)); // Store user data
 
         setUser(result); // Set the parsed user object
 
@@ -151,7 +157,7 @@ const RegisterForm = ({ setUser }) => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label htmlFor="userId">Aadhar ID Number</Form.Label>
+              <Form.Label htmlFor="userId">User ID</Form.Label>
               <Form.Control
                 type="text"
                 id="userId"
