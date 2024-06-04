@@ -62,7 +62,7 @@ const ShowDetailsComponent = ({ areaId, driverId, vehicleId }) => {
     const encodedAreaId = btoa(areaId);
     const encodedDriverId = btoa(driverId);
     const encodedVehicleId = btoa(vehicleId);
-    const url = `/driver-vehicle-details?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
+    const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
     navigate(url);
   };
 
@@ -119,7 +119,7 @@ const ShowDetailsComponent = ({ areaId, driverId, vehicleId }) => {
               <Skeleton width={100} height={30} />
             ) : (
               <button className="btn btn-custom" onClick={handleShowDetails}>
-                Show Details
+                Track
               </button>
             )}
           </div>

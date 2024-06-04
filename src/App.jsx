@@ -1,7 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
-import AddDriver from "./pages/AddDriver";
-import AddVehicle from "./pages/AddVehicle";
 import AdminPage from "./pages/AdminPage";
 import Dashboard from "./pages/Dashboard";
 import LoginForm from "./pages/LoginForm";
@@ -26,9 +24,6 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<LoginForm setUser={setUser} />} />
         <Route path="/" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/addVehicle" element={<AddVehicle />} />
-        <Route path="/addDriver" element={<AddDriver />} />
         <Route path="/driver-vehicle-details" element={<DriverVehicleDetails />} />
         <Route path="/tracking" element={<TrackingMap />} />
         <Route path="*" element={<NotFound />} />

@@ -78,27 +78,27 @@ const Dashboard = () => {
             {loadingNotifications
               ? <p>Loading notifications...</p>
               : notifications.map(notification => (
-                  <NotificationComponent
-                    key={notification._id}
-                    message={notification.message}
-                  />
-                ))}
+                <NotificationComponent
+                  key={notification._id}
+                  message={notification.message}
+                />
+              ))}
           </section>
         </div>
         <div className="col-md-6">
           <section className="profiles mb-4">
             {loading
               ? Array.from({ length: 3 }).map((_, index) => (
-                  <ShowDetailsComponentSkeleton key={index} />
-                ))
+                <ShowDetailsComponentSkeleton key={index} />
+              ))
               : profiles.map(profile => (
-                  <ShowDetailsComponent
-                    key={profile._id}
-                    areaId={profile.areaId}
-                    driverId={profile.driverId}
-                    vehicleId={profile.vehicleId}
-                  />
-                ))}
+                <ShowDetailsComponent
+                  key={profile._id}
+                  areaId={profile.areaId}
+                  driverId={profile.driverId}
+                  vehicleId={profile.vehicleId}
+                />
+              ))}q
           </section>
         </div>
       </div>

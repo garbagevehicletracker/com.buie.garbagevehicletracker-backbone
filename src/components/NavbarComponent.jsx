@@ -50,13 +50,6 @@ const NavBar = ({ user, setUser }) => {
                 >
                   Dashboard
                 </Button>
-                <Button
-                  variant="outline-light"
-                  className="navbar-button me-2 w-100"
-                  onClick={handleAdmin}
-                >
-                  Admin
-                </Button>
                 <Nav.Item className="navbar-text-custom me-2 w-100 text-center">
                   Welcome, {user.username}
                 </Nav.Item>
