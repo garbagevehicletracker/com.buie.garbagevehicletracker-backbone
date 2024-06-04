@@ -26,26 +26,32 @@ const Dashboard = () => {
   const fetchProfiles = async () => {
     const authToken = getAuthToken();
     if (!authToken) return;
-
+  
     const headers = {
       Authorization: `Bearer ${authToken}`,
       'Content-Type': 'application/json'
     };
-
-
+  
     try {
       const response = await fetch('https://garbage-tracking-backend.onrender.com/work/get-all-assigns', {
         method: 'GET',
         headers: headers
       });
       const data = await response.json();
-      setProfiles(data);
+      const areaIdToMatch = getAreaId();
+      console.log("Area ID to Match:", areaIdToMatch);
+      const filteredProfiles = data.filter(profile => {
+        console.log("Profile Area ID:", profile.areaId);
+        return profile.areaId === areaIdToMatch;
+      });
+      setProfiles(filteredProfiles);
     } catch (error) {
       console.error('Error fetching profiles:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const fetchNotifications = async () => {
     const authToken = getAuthToken();
@@ -82,6 +88,13 @@ const Dashboard = () => {
     return localStorage.getItem('token');
   };
 
+  const getAreaId = () => {
+    const userData = localStorage.getItem('user');
+    if (!userData) return null;
+    const parsedUserData = JSON.parse(userData);
+    return parsedUserData.area;
+  };
+
   return (
     <div className="dashboard-container overflow-hidden position-relative">
       <button className="toggle-sidebar-button" onClick={toggleSidebar}>
@@ -100,9 +113,9 @@ const Dashboard = () => {
             ))}
         </div>
       </div>
-      <div className="row m-5">
+      <div className="row mt-15 m-3">
         <div className="col-md-6">
-          <section className="profiles mb-4">
+          <section className="profiles mt-lg-4">
             {loading
               ? Array.from({ length: 3 }).map((_, index) => (
                 <ShowDetailsComponentSkeleton key={index} />

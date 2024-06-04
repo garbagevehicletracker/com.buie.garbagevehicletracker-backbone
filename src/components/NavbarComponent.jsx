@@ -45,17 +45,17 @@ const NavBar = ({ user, setUser }) => {
               <>
                 <Button
                   variant="outline-light"
-                  className="navbar-button me-2 w-100"
+                  className="navbar-button me-2 w-10"
                   onClick={handleDashboard}
                 >
                   Dashboard
                 </Button>
                 <Nav.Item className="navbar-text-custom me-2 w-100 text-center">
-                  Welcome, {user.username}
+                  Welcome, {user.name}
                 </Nav.Item>
                 <Button
                   variant="outline-light"
-                  className="navbar-button-custom w-100"
+                  className="navbar-button-custom w-90"
                   onClick={handleLogout}
                 >
                   Logout
@@ -64,7 +64,7 @@ const NavBar = ({ user, setUser }) => {
             ) : (
               <Button
                 variant="outline-light"
-                className="navbar-button active w-100"
+                className="navbar-button active w-90"
                 onClick={() => navigate("/login")}
               >
                 Login
