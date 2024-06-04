@@ -123,6 +123,14 @@ const LoginForm = ({ setUser }) => {
             >
               {loading ? "Logging In..." : "Log In"}
             </Button>
+            <Button
+              variant="failed"
+              onClick={() => navigate("/register")}
+              className="w-100 btn-lg mt-2 border"
+              // disabled={loading}
+            >
+              Register
+            </Button>
           </Form>
         </div>
       </Container>
