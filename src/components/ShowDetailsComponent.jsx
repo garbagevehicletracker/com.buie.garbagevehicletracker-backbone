@@ -61,7 +61,7 @@ const ShowDetailsComponent = ({ areaId, driverId, vehicleId }) => {
   const handleShowDetails = () => {
     const encodedAreaId = btoa(areaId);
     const encodedDriverId = btoa(driverId);
-    const encodedVehicleId = btoa(vehicleId);
+    const encodedVehicleId = btoa(vehicleDetails.vehicleId); // Pass the correct vehicleId
     const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
     navigate(url);
   };

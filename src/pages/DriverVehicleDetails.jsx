@@ -25,6 +25,7 @@ const DriverVehicleDetails = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log(`Data fetched from ${url}:`, data); // Log the fetched data
       setState(data);
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -76,10 +77,11 @@ const DriverVehicleDetails = () => {
     const encodedDriverId = btoa(driverId);
     const encodedVehicleId = btoa(vehicleId);
     const url = `/tracking?areaId=${encodedAreaId}&driverId=${encodedDriverId}&vehicleId=${encodedVehicleId}`;
-    console.log(driverId)
+    console.log(driverId);
 
     // Using navigate to programmatically navigate
     navigate(url);
+    console.log(vehicleData)
   };
 
   if (loading)
